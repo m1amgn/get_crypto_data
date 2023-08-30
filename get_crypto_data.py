@@ -1,186 +1,424 @@
 import requests
-import numpy as np
-import pandas as pd
-from binance.spot import Spot
+
+def binance_spot_price(symbol: str, limit: int) -> float:
+      
+    base_url = "https://api.binance.com/api/v3"
+    endpoint = f"/depth"
+    
+    params = {
+        "symbol": symbol,
+        "limit": limit
+    }
+    
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+    
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+def huobi_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.huobi.pro"
+    endpoint = f"/market/depth"
+    
+    params = {
+        "symbol": symbol,
+        "type": "step1",  # step0 for merged depth, step1 for precision depth
+        "depth": limit
+    }
+    
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200 and data.get("status") == "ok":
+        bids = data["tick"]["bids"]
+        asks = data["tick"]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+def kucoin_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.kucoin.com"
+    endpoint = f"/api/v1/market/orderbook/level2_20"
+    
+    params = {
+        "symbol": symbol,
+        "limit": limit
+    }
+    
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["data"]["bids"]
+        asks = data["data"]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+        
+        
+def kraken_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.kraken.com"
+    endpoint = f"/0/public/Depth"
+    
+    params = {
+        "pair": symbol,
+        "count": limit
+    }
+    
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if "result" in data:
+        result = data["result"]
+        bids = result[symbol]["bids"]
+        asks = result[symbol]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+    
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+def yobit_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://yobit.net/api/3"
+    endpoint = f"/depth/{symbol}"
+
+    params = {
+        "limit": limit
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data[symbol]["bids"]
+        asks = data[symbol]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
 
 
-#spot_prices = {}
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+def okx_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://www.okex.com/api/v5"
+    endpoint = f"/market/books"
 
-def binance_spot_price(symbol: str) -> float:
-    client = Spot()
-    ohlc_data = (client.klines(symbol, "1m", limit=1))
-    binance_close_price = round(float(ohlc_data[0][4]), 3)
-    return binance_close_price
+    params = {
+        "instId": symbol,
+        "sz": limit
+    }
 
-def huobi_spot_price(symbol: str) -> float:
-    # "https://api.huobi.pro/market/history/kline?period=1day&size=200&symbol=btcusdt"
-    ohlc_data = requests.get(f'https://api.huobi.pro/market/history/kline?period=1min&size=1&symbol={symbol}').json()
-    houbi_close_price = round(float(ohlc_data['data'][0]['close']), 3)
-    return houbi_close_price
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["data"][0]["bids"]
+        asks = data["data"][0]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
 
-def kucoin_spot_price(symbol: str) -> float:
-    # 'https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=BTC-USDT'
-    ohlc_data = requests.get(f'https://api.kucoin.com/api/v1/market/orderbook/level1?symbol={symbol}').json()
-    kucoin_close_price = round(float(ohlc_data['data']['price']), 3)
-    return kucoin_close_price
 
-def kraken_spot_price(symbol: str) -> float:
-    # 'https://api.kraken.com/0/public/OHLC?pair=XBTUSDT&interval=1'
-    ohlc_data = requests.get(f'https://api.kraken.com/0/public/OHLC?pair={symbol}&interval=1').json()
-    kraken_close_price = round(float(ohlc_data['result'][symbol][-1][4]), 3)
-    return kraken_close_price
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+def bybit_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api-testnet.bybit.com/v5"
+    endpoint = f"/market/orderbook"
 
-def yobit_spot_price(symbol: str) -> float:
-    # 'https://yobit.net/api/3/ticker/btc_usdt'
-    ohlc_data = requests.get(f'https://yobit.net/api/3/ticker/{symbol}').json()
-    youbit_close_price = round(float(ohlc_data[symbol]['last']), 3)
-    #buy_price = round(float(ohlc_data[symbol]['buy']), 3)
-    #sell_price = round(float(ohlc_data[symbol]['sell']), 3)
-    #spot_prices['yobit'] = {'buy': buy_price, 'sell': sell_price}
-    #print(spot_prices)
-    return youbit_close_price
+    params = {
+        "category": "spot",
+        "symbol": symbol,
+        "limit": limit
+    }
 
-def okx_spot_price(symbol: str) -> float:
-    # 'https://www.okx.com/api/v5/market/index-tickers?instId=BTC-USDT'
-    ohlc_data = requests.get(f'https://www.okx.com/api/v5/market/index-tickers?instId={symbol}').json()
-    okx_close_price = round(float(ohlc_data['data'][0]['idxPx']), 3)
-    # buy_asks_prices = requests.get(f'https://www.okx.com/api/v5/market/books?instId={symbol}').json()
-    # sell_price = round(float(buy_asks_prices['data'][0]['asks'][0][0]), 3)
-    # buy_price = round(float(buy_asks_prices['data'][0]['bids'][0][0]), 3)
-    # print(buy_price)
-    # print(sell_price)
-    return okx_close_price
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["result"]["b"]
+        asks = data["result"]["a"]
+    else:
+        print(f'Error retrieving order book data - {data}')
 
-def ftx_spot_price(symbol: str) -> float:
-    # 'https://ftx.com/api/markets/BTC/USDT'
-    ohlc_data = requests.get(f'https://ftx.com/api/markets/{symbol}').json()
-    ftx_close_price = round(float(ohlc_data['result']['last']), 3)
-    # buy_price = round(float(ohlc_data['result']['bid']), 3)
-    # sell_price = round(float(ohlc_data['result']['ask']), 3)
-    # print(buy_price)
-    # print(sell_price)
-    return ftx_close_price
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+def bittrex_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.bittrex.com/v3"
+    endpoint = f"/markets/{symbol}/orderbook"
 
-def bybit_spot_price(symbol: str) -> float:
-    # 'https://api-testnet.bybit.com/v2/public/tickers?symbol=BTCUSDT'
-    ohlc_data = requests.get(f'https://api-testnet.bybit.com/v2/public/tickers?symbol={symbol}').json()
-    bybit_close_price = round(float(ohlc_data['result'][0]['last_price']), 3)
-    #buy_price = round(float(ohlc_data['result'][0]['bid_price']), 3)
-    #sell_price = round(float(ohlc_data['result'][0]['ask_price']), 3)
-    # print(f'bid-{buy_price}')
-    # print(f'ask-{sell_price}')
-    return bybit_close_price
+    params = {
+        "depth": limit
+    }
 
-def bittrex_spot_price(symbol: str) -> float:
-    # 'https://api.bittrex.com/v3/markets/btc-usdt/ticker'
-    ohlc_data = requests.get(f'https://api.bittrex.com/v3/markets/{symbol}/ticker').json()
-    bittrex_close_price = round(float(ohlc_data['lastTradeRate']), 3)
-    # buy_price = round(float(ohlc_data['bidRate']), 3)
-    # sell_price = round(float(ohlc_data['askRate']), 3)
-    # print(f'bid-{buy_price}')
-    # print(f'ask-{sell_price}')
-    return bittrex_close_price
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["bid"]
+        asks = data["ask"]
+    else:
+        print(f'Error retrieving order book data - {data}')
 
+    max_bids_price = round(float(bids[0]["rate"]), 3)
+    bids_volumes = round(float(bids[0]["quantity"]), 3)
+    min_asks_price = round(float(asks[0]["rate"]), 3)
+    asks_volumes = round(float(asks[0]["quantity"]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
+    
 def phemex_spot_price(symbol: str) -> float:
-    # 'https://api.phemex.com/md/trade?symbol=sBTCUSDT'
-    ohlc_data = requests.get(f'https://api.phemex.com/md/trade?symbol={symbol}').json()
-    phemex_close_price = round(float(ohlc_data['result']['trades'][0][2]), 3) / 100000000
-    # bid_asks_prices = requests.get(f'https://api.phemex.com/md/orderbook?symbol={symbol}').json()
-    # buy_price = round(float(bid_asks_prices['result']['book']['bids'][0][0]), 3) / 100000000
-    # sell_price = round(float(bid_asks_prices['result']['book']['asks'][0][0]), 3) / 100000000
-    # print(f'bid-{buy_price}')
-    # print(f'ask-{sell_price}')
-    return phemex_close_price
-#https://github.com/phemex/phemex-api-docs/blob/master/Public-Spot-API-en.md#productinfo - symbols
+    base_url = "https://api.phemex.com/md"
+    endpoint = f"/orderbook"
 
+    params = {
+       "symbol": symbol
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["result"]["book"]["asks"]
+        asks = data["result"]["book"]["bids"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0] / 10000), 3)
+    bids_volumes = round(float(bids[0][1] / 10000), 3)
+    min_asks_price = round(float(asks[0][0] / 10000), 3)
+    asks_volumes = round(float(asks[0][1] / 10000), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+    
+    
 def gemini_spot_price(symbol: str) -> float:
-    # 'https://api.gemini.com/v1/pubticker/btcusd'
-    ohlc_data = requests.get(f'https://api.gemini.com/v1/pubticker/{symbol}').json()
-    gemini_close_price = round(float(ohlc_data['last']), 3)
-    # buy_price = round(float(ohlc_data['bid']), 3)
-    # sell_price = round(float(ohlc_data['ask']), 3)
-    # print(f'bid-{buy_price}')
-    # print(f'ask-{sell_price}')
-    return gemini_close_price
+    base_url = "https://api.gemini.com/v1"
+    endpoint = f"/book/{symbol}"
 
-def deribit_spot_price(symbol: str) -> float:
-    # 'https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-PERPETUAL'
-    ohlc_data = requests.get(f'https://www.deribit.com/api/v2/public/ticker?instrument_name={symbol}').json()
-    deribit_close_price = round(float(ohlc_data['result']['last_price']), 3)
-    # buy_price = round(float(ohlc_data['result']['best_bid_price']), 3)
-    # sell_price = round(float(ohlc_data['result']['best_ask_price']), 3)
-    # print(f'bid-{buy_price}')
-    # print(f'ask-{sell_price}')
-    return deribit_close_price
+    response = requests.get(base_url + endpoint)
+    data = response.json()
 
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
 
-print('-----------BINANCE-----------')
-print(binance_spot_price('BTCUSDT'))
-print(binance_spot_price('ETHUSDT'))
-print(binance_spot_price('LTCUSDT'))
+    max_bids_price = round(float(bids[0]["price"]), 3)
+    bids_volumes = round(float(bids[0]["amount"]), 3)
+    min_asks_price = round(float(asks[0]["price"]), 3)
+    asks_volumes = round(float(asks[0]["amount"]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
 
-print('-----------HUOBI-----------')
-print(huobi_spot_price('BTCUSDT'.lower()))
-print(huobi_spot_price('ETHUSDT'.lower()))
-print(huobi_spot_price('LTCUSDT'.lower()))
+def deribit_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://www.deribit.com/api/v2"
+    endpoint = f"/public/get_order_book"
+
+    params = {
+        "instrument_name": symbol,
+        "depth": limit
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["result"]["bids"]
+        asks = data["result"]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f"Максимальная цена покупки {symbol} {max_bids_price} - объем {round(bids_volumes / max_bids_price, 3)} - сумма {bids_volumes}")
+    print(f"Максимальная цена покупки {symbol} {min_asks_price} - объем {round(asks_volumes / min_asks_price, 3)} - сумма {asks_volumes}")
+    
+    
+def gateio_spot_price(symbol: str) -> float:
+    base_url = "https://api.gate.io/api2/1"
+    endpoint = f"/orderBook/{symbol}"
+
+    response = requests.get(base_url + endpoint)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
 
-print('-----------KUCOIN-----------')
-print(kucoin_spot_price('BTC-USDT'))
-print(kucoin_spot_price('ETH-USDT'))
-print(kucoin_spot_price('LTC-USDT'))
+def mexc_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.mexc.com/api/v3"
+    endpoint = f"/depth"
+
+    params = {
+    "symbol": symbol,
+    "limit": limit
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+    
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+    
+    print(f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
 
-print('-----------KRAKEN-----------')
-print(kraken_spot_price('XBTUSDT'))
-print(kraken_spot_price('ETHUSDT'))
-print(kraken_spot_price('LTCUSDT'))
+print("-----------BINANCE-----------")
+binance_spot_price("BTCUSDT", 1)
+binance_spot_price("ETHUSDT", 1)
+binance_spot_price("LTCUSDT", 1)
+print()
 
+print("-----------HUOBI-----------")
+huobi_spot_price("BTCUSDT".lower(), 5)
+huobi_spot_price("ETHUSDT".lower(), 5)
+huobi_spot_price("LTCUSDT".lower(), 5)
+print()
 
-print('-----------YOBIT-----------')
-print(yobit_spot_price('btc_usdt'))
-print(yobit_spot_price('eth_usdt'))
-print(yobit_spot_price('ltc_usdt'))
+print("-----------KUCOIN-----------")
+kucoin_spot_price("BTC-USDT", 1)
+kucoin_spot_price("ETH-USDT", 1)
+kucoin_spot_price("LTC-USDT", 1)
+print()
 
+print("-----------KRAKEN-----------")
+kraken_spot_price("XBTUSDT", 1)
+kraken_spot_price("ETHUSDT", 1)
+kraken_spot_price("LTCUSDT", 1)
+print()
 
-print('-----------OKX-----------')
-print(okx_spot_price('BTC-USDT'))
-print(okx_spot_price('ETH-USDT'))
-print(okx_spot_price('LTC-USDT'))
+print("-----------YOBIT-----------")
+yobit_spot_price("btc_usdt", 5)
+yobit_spot_price("eth_usdt", 5)
+yobit_spot_price("ltc_usdt", 5)
+print()
 
+print("-----------OKX-----------")
+okx_spot_price("BTC-USDT", 5)
+okx_spot_price("ETH-USDT", 5)
+okx_spot_price("LTC-USDT", 5)
+print()
 
-print('-----------FTX-----------')
-print(ftx_spot_price('BTC/USDT'))
-print(ftx_spot_price('ETH/USDT'))
-print(ftx_spot_price('LTC/USDT'))
+print("-----------BYBIT-----------")
+bybit_spot_price("BTCUSDT", 1)
+bybit_spot_price("ETHUSDT", 1)
+bybit_spot_price("LTCUSDT", 1)
+print()
 
+print("-----------BITTREX-----------")
+bittrex_spot_price("BTC-USDT", 1)
+bittrex_spot_price("ETH-USDT", 1)
+bittrex_spot_price("LTC-USDT", 1)
+print()
 
-print('-----------BYBIT-----------')
-print(bybit_spot_price('BTCUSDT'))
-print(bybit_spot_price('ETHUSDT'))
-print(bybit_spot_price('LTCUSDT'))
+print("-----------PHEMEX-----------")
+phemex_spot_price("BTCUSD")
+phemex_spot_price("ETHUSD")
+phemex_spot_price("LTCUSD")
+print()
 
+print("-----------GEMINI-----------")
+gemini_spot_price("btcusd")
+gemini_spot_price("ethusd")
+gemini_spot_price("ltcusd")
+print()
 
-print('-----------BITTREX-----------')
-print(bittrex_spot_price('btc-usdt'))
-print(bittrex_spot_price('eth-usdt'))
-print(bittrex_spot_price('ltc-usdt'))
+print("-----------DERIBIT-----------")
+deribit_spot_price("BTC-PERPETUAL", 5)
+deribit_spot_price("ETH-PERPETUAL", 5)
+deribit_spot_price("LTC_USDC-PERPETUAL", 5)
+print()
 
+print("-----------GATEIO-----------")
+gateio_spot_price("btc_usdt")
+gateio_spot_price("eth_usdt")
+gateio_spot_price("ltc_usdt")
+print()
 
-print('-----------PHEMEX-----------')
-print(phemex_spot_price('sBTCUSDT'))
-print(phemex_spot_price('sETHUSDT'))
-print(phemex_spot_price('sLTCUSDT'))
-
-
-print('-----------GEMINI-----------')
-print(gemini_spot_price('btcusd'))
-print(gemini_spot_price('ethusd'))
-print(gemini_spot_price('ltcusd'))
-
-
-print('-----------DERIBIT-----------')
-print(deribit_spot_price('BTC-PERPETUAL'))
-print(deribit_spot_price('ETH-PERPETUAL'))
-print(deribit_spot_price('LTC_USDC-PERPETUAL'))
+print("-----------MEXC-----------")
+mexc_spot_price("BTCUSDT", 5)  
+mexc_spot_price("ETHUSDT", 5)  
+mexc_spot_price("ETHUSDT", 5)  
+print()
