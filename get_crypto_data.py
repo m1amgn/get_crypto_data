@@ -379,9 +379,11 @@ def uniswap_prices(token_in_adress: str, token_out_adress: str) -> float:
         ).call()
     except Exception as e:
         print(e)
-
-    print(f"Цена покупки {amounts_out[1] / amounts_out[0]}")
-    print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
+      
+      
+      print(f"Цена покупки {amounts_out[1] / amounts_out[0]}")
+      print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
+      print(f"Cредняя цена {(amounts_out[1] / amounts_out[0] + amounts_in[0] / amounts_in[1]) / 2}")
 
 def pancakeswap_prices(token_in_adress: str, token_out_adress: str) -> float:
 
@@ -416,9 +418,10 @@ def pancakeswap_prices(token_in_adress: str, token_out_adress: str) -> float:
         ).call()
     except Exception as e:
         print(e)
-
-    print(f"Цена покупки {amounts_out[1] / amounts_out[0]}")
-    print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
+          
+      print(f"Цена покупки {amounts_out[1] / amounts_out[0]}")
+      print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
+      print(f"Cредняя цена {(amounts_out[1] / amounts_out[0] + amounts_in[0] / amounts_in[1]) / 2}")
 
 def sushiswap_prices(token_in_adress: str, token_out_adress: str):
 
@@ -453,9 +456,10 @@ def sushiswap_prices(token_in_adress: str, token_out_adress: str):
         ).call()
     except Exception as e:
         print(e)
-
-    print(f"Цена покупки {amounts_out[1] / amounts_out[0]}")
-    print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
+      
+      print(f"Цена покупки {amounts_out[1] / amounts_out[0]}")
+      print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
+      print(f"Cредняя цена {(amounts_out[1] / amounts_out[0] + amounts_in[0] / amounts_in[1]) / 2}")
 
 print("-----------BINANCE-----------")
 binance_spot_price("BTCUSDT", 1)
