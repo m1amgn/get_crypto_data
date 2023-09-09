@@ -1,4 +1,6 @@
 import requests
+from web3 import Web3
+
 
 def binance_spot_price(symbol: str, limit: int) -> float:
       
