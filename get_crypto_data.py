@@ -514,6 +514,19 @@ def kyberswap_prices(token_in_address: str, token_out_address: str):
     print(
         f'Предполагаемая цена продажи с проскальзываниями {token_price_slippage}')
 
+def kine_spot_price(symbol: str) -> float:
+    base_url = "https://api.kine.exchange"
+    endpoint = f"/market/api/price/{symbol}"
+
+    response = requests.get(base_url + endpoint)
+    data = response.json()
+
+    if response.status_code == 200:
+        price = data["data"]["price"]
+    else:
+        print(f"Error retrieving order book data - {data}")
+    print(f'Цена покупки {symbol} {price}')
+
 
 print("-----------BINANCE-----------")
 binance_spot_price("BTCUSDT", 1)
@@ -629,4 +642,10 @@ token_in_address = Web3.to_checksum_address(
 token_out_address = Web3.to_checksum_address(
     "0x6B175474E89094C44Da98b954EedeAC495271d0F")  # dai
 kyberswap_prices(token_in_address, token_out_address)
+print()
+
+print("-----------KINE----------")
+kine_spot_price("BTCUSD")
+kine_spot_price("ETHUSD")
+kine_spot_price("LTCUSD")
 print()
