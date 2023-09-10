@@ -571,7 +571,7 @@ token_in_address = Web3.to_checksum_address(
     "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")  # eth
 token_out_address = Web3.to_checksum_address(
     "0x6B175474E89094C44Da98b954EedeAC495271d0F")  # dai
-uniswap_prices(token_in_adress, token_out_adress)
+uniswap_prices(token_in_address, token_out_address)
 print()
 
 print("-----------PANCAKESWAP-----------")
