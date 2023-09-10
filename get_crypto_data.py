@@ -527,6 +527,29 @@ def kine_spot_price(symbol: str) -> float:
         print(f"Error retrieving order book data - {data}")
     print(f'Цена покупки {symbol} {price}')
 
+def dydx_spot_price(symbol: str) -> float:
+    base_url = "https://api.dydx.exchange/v3"
+    endpoint = f"/orderbook/{symbol}"
+
+    response = requests.get(base_url + endpoint)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0]["price"]), 3)
+    bids_volumes = round(float(bids[0]["size"]), 3)
+    min_asks_price = round(float(asks[0]["price"]), 3)
+    asks_volumes = round(float(asks[0]["size"]), 3)
+
+    print(
+        f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(
+        f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+
 
 print("-----------BINANCE-----------")
 binance_spot_price("BTCUSDT", 1)
@@ -648,4 +671,10 @@ print("-----------KINE----------")
 kine_spot_price("BTCUSD")
 kine_spot_price("ETHUSD")
 kine_spot_price("LTCUSD")
+print()
+
+print("-----------DYDX---------")
+dydx_spot_price("BTC-USD")
+dydx_spot_price("ETH-USD")
+dydx_spot_price("LTC-USD")
 print()
