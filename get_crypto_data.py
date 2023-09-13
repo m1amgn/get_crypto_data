@@ -30,7 +30,6 @@ def binance_spot_price(symbol: str, limit: int) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
-
 def huobi_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://api.huobi.pro"
     endpoint = f"/market/depth"
@@ -60,7 +59,6 @@ def huobi_spot_price(symbol: str, limit: int) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
-
 def kucoin_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://api.kucoin.com"
     endpoint = f"/api/v1/market/orderbook/level2_20"
@@ -88,7 +86,6 @@ def kucoin_spot_price(symbol: str, limit: int) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def kraken_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://api.kraken.com"
@@ -119,7 +116,6 @@ def kraken_spot_price(symbol: str, limit: int) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
-
 def yobit_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://yobit.net/api/3"
     endpoint = f"/depth/{symbol}"
@@ -146,7 +142,6 @@ def yobit_spot_price(symbol: str, limit: int) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def okx_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://www.okex.com/api/v5"
@@ -175,7 +170,6 @@ def okx_spot_price(symbol: str, limit: int) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def bybit_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://api-testnet.bybit.com/v5"
@@ -206,7 +200,6 @@ def bybit_spot_price(symbol: str, limit: int) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
-
 def bittrex_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://api.bittrex.com/v3"
     endpoint = f"/markets/{symbol}/orderbook"
@@ -233,7 +226,6 @@ def bittrex_spot_price(symbol: str, limit: int) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def phemex_spot_price(symbol: str) -> float:
     base_url = "https://api.phemex.com/md"
@@ -262,7 +254,6 @@ def phemex_spot_price(symbol: str) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
-
 def gemini_spot_price(symbol: str) -> float:
     base_url = "https://api.gemini.com/v1"
     endpoint = f"/book/{symbol}"
@@ -285,7 +276,6 @@ def gemini_spot_price(symbol: str) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def deribit_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://www.deribit.com/api/v2"
@@ -315,7 +305,6 @@ def deribit_spot_price(symbol: str, limit: int) -> float:
     print(
         f"Максимальная цена покупки {symbol} {min_asks_price} - объем {round(asks_volumes / min_asks_price, 3)} - сумма {asks_volumes}")
 
-
 def gateio_spot_price(symbol: str) -> float:
     base_url = "https://api.gate.io/api2/1"
     endpoint = f"/orderBook/{symbol}"
@@ -338,7 +327,6 @@ def gateio_spot_price(symbol: str) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def mexc_spot_price(symbol: str, limit: int) -> float:
     base_url = "https://api.mexc.com/api/v3"
@@ -367,7 +355,6 @@ def mexc_spot_price(symbol: str, limit: int) -> float:
         f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
-
 
 def uniswap_prices(token_in_address: str, token_out_address: str) -> float:
     UNISWAP_ROUTER_ADDRESS = Web3.to_checksum_address(
@@ -403,7 +390,6 @@ def uniswap_prices(token_in_address: str, token_out_address: str) -> float:
     print(
         f"Cредняя цена {(amounts_out[1] / amounts_out[0] + amounts_in[0] / amounts_in[1]) / 2}")
 
-
 def pancakeswap_prices(token_in_address: str, token_out_address: str) -> float:
     PANCAKE_ROUTER_ADDRESS = Web3.to_checksum_address(
         "0x10ED43C718714eb63d5aA57B78B54704E256024E")
@@ -438,7 +424,6 @@ def pancakeswap_prices(token_in_address: str, token_out_address: str) -> float:
     print(
         f"Cредняя цена {(amounts_out[1] / amounts_out[0] + amounts_in[0] / amounts_in[1]) / 2}")
 
-
 def sushiswap_prices(token_in_address: str, token_out_address: str):
     SUSHISWAP_ROUTER_ADDRESS = Web3.to_checksum_address(
         "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F")
@@ -472,7 +457,6 @@ def sushiswap_prices(token_in_address: str, token_out_address: str):
     print(f"Цена продажи {amounts_in[0] / amounts_in[1]}")
     print(
         f"Cредняя цена {(amounts_out[1] / amounts_out[0] + amounts_in[0] / amounts_in[1]) / 2}")
-
 
 def oneinch_spot_prices(token_in_address):
     url = "https://api.1inch.dev/price/v1.1/1?currency=USD"
@@ -572,6 +556,28 @@ def muteio_prices(token_in_address: str, token_out_address: str):
 
     print(f"Цена покупки {amounts_out[0][1] / 10**6}")
 
+def zigzag_spot_price(symbol: str) -> float:
+    base_url = "https://zigzag-exchange.herokuapp.com/api/coinmarketcap/v1"
+    endpoint = f"/orderbook/{symbol}/1"
+
+    response = requests.get(base_url + endpoint)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+
+    print(
+        f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(
+        f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
 print("-----------BINANCE-----------")
 binance_spot_price("BTCUSDT", 1)
@@ -707,4 +713,8 @@ token_in_address = Web3.to_checksum_address(
 token_out_address = Web3.to_checksum_address(
     "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4")  # usdc
 muteio_prices(token_in_address, token_out_address)
+print()
+
+print("-----------ZYGZAG--------")
+zigzag_spot_price("eth-usdc")
 print()
