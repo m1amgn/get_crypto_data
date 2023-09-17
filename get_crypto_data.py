@@ -579,6 +579,86 @@ def zigzag_spot_price(symbol: str) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
+def cryptocom_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.crypto.com/v2/public"
+    endpoint = f"/get-book"
+
+    params = {
+        "instrument_name": symbol,
+        "depth": limit
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["result"]["data"][0]["bids"]
+        asks = data["result"]["data"][0]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+
+    print(
+        f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(
+        f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+
+def bitfinex_spot_price(symbol: str) -> float:
+    base_url = "https://api.bitfinex.com/v1"
+    endpoint = f"/book/{symbol}"
+
+    response = requests.get(base_url + endpoint)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0]["price"]), 3)
+    bids_volumes = round(float(bids[0]["amount"]), 3)
+    min_asks_price = round(float(asks[0]["price"]), 3)
+    asks_volumes = round(float(asks[0]["amount"]), 3)
+
+    print(
+        f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(
+        f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+
+def poloniex_spot_price(symbol: str, limit: int) -> float:
+    base_url = "https://api.poloniex.com/markets"
+    endpoint = f"/{symbol}/orderBook"
+
+    params = {
+        "scale": 1,
+        "limit": limit
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["bids"]
+        asks = data["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0]), 3)
+    bids_volumes = round(float(bids[1]), 3)
+    min_asks_price = round(float(asks[0]), 3)
+    asks_volumes = round(float(asks[1]), 3)
+
+    print(
+        f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(
+        f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+
+
 print("-----------BINANCE-----------")
 binance_spot_price("BTCUSDT", 1)
 binance_spot_price("ETHUSDT", 1)
@@ -717,4 +797,22 @@ print()
 
 print("-----------ZYGZAG--------")
 zigzag_spot_price("eth-usdc")
+print()
+
+print("-----------CRYPTOCOM--------")
+cryptocom_spot_price("BTC_USDT", 10)
+cryptocom_spot_price("ETH_USDT", 10)
+cryptocom_spot_price("LTC_USDT", 10)
+print()
+
+print("-----------BITFINEX------")
+bitfinex_spot_price("BTCUSD")
+bitfinex_spot_price("ETHUSD")
+bitfinex_spot_price("LTCUSD")
+print()
+
+print("-----------POLONIEX------")
+poloniex_spot_price("BTC_USDT", 5)
+poloniex_spot_price("ETH_USDT", 5)
+poloniex_spot_price("LTC_USDT", 5)
 print()
