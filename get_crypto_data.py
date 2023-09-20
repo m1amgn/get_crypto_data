@@ -685,6 +685,33 @@ def garantex_spot_price(symbol: str) -> float:
     print(
         f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
 
+def bitget_spot_price(symbol: str) -> float:
+    base_url = "https://api.bitget.com/data/v1"
+    endpoint = f"/market/depth"
+
+    params = {
+        "symbol": symbol,
+    }
+
+    response = requests.get(base_url + endpoint, params=params)
+    data = response.json()
+
+    if response.status_code == 200:
+        bids = data["data"]["bids"]
+        asks = data["data"]["asks"]
+    else:
+        print(f'Error retrieving order book data - {data}')
+
+    max_bids_price = round(float(bids[0][0]), 3)
+    bids_volumes = round(float(bids[0][1]), 3)
+    min_asks_price = round(float(asks[0][0]), 3)
+    asks_volumes = round(float(asks[0][1]), 3)
+
+    print(
+        f'Максимальная цена покупки {symbol} {max_bids_price} - объем {bids_volumes} - сумма {round(max_bids_price * bids_volumes, 3)}')
+    print(
+        f'Минимальная цена продажи {symbol} {min_asks_price} - объем {asks_volumes} - сумма {round(min_asks_price * asks_volumes, 3)}')
+
 
 print("-----------BINANCE-----------")
 binance_spot_price("BTCUSDT", 1)
@@ -848,4 +875,11 @@ print("-----------GARANTEX------")
 garantex_spot_price("btcusdt")
 garantex_spot_price("ethusdt")
 print()
+
+print("-----------BITGET------")
+bitget_spot_price("btc_usdt")
+bitget_spot_price("eth_usdt")
+bitget_spot_price("ltc_usdt")
+print()
+
 
